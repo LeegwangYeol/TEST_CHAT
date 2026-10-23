@@ -81,7 +81,7 @@ chat_engine = index.as_chat_engine(
     chat_mode="context",
     memory=memory,
     similarity_top_k=1,
-    context_prompt=qa_prompt_template
+    context_template=qa_prompt_template
 )
 
 # --- 6. 대화 시작 ---
