@@ -11,7 +11,7 @@ llm = Ollama(model="DeepSeek-R1-Distill-Qwen-1.5B-Q4_K_M", request_timeout=300.0
 Settings.llm = llm
 Settings.embed_model = embed_model
 
-DOCS_PATH = "c:\\source\\CNHRYPRS1019\\data"
+DOCS_PATH = "data"
 
 # --- 2. 의미 기억 구현 (In-Memory) ---
 print("메모리 기반 인덱스를 생성합니다...")
@@ -53,35 +53,20 @@ node_parser = SentenceSplitter(
 memory = ChatMemoryBuffer.from_defaults(token_limit=1500)
 
 # --- 5. 채팅 프롬프트 템플릿 설정 ---
-from llama_index.core import ChatPromptTemplate
-from llama_index.core.llms import ChatMessage, MessageRole
-
-qa_prompt_template_messages = [
-    ChatMessage(
-        role=MessageRole.SYSTEM,
-        content=(
-            "You are an AI assistant that answers user questions based ONLY on the provided 'context' information.\n"
-            "If the answer is not found in the given context, you MUST answer 'I could not find the information in the document.'"
-        ),
-    ),
-    ChatMessage(
-        role=MessageRole.USER,
-        content=(
-            "The context information is as follows.\n"
-            "---------------------\n"
-            "{context_str}\n"
-            "---------------------\n"
-            "Based on the context information above, please answer the following question: {query_str}"
-        ),
-    ),
-]
-qa_prompt_template = ChatPromptTemplate(message_templates=qa_prompt_template_messages)
+qa_prompt_template_str = (
+    "You are an AI assistant that answers user questions based ONLY on the provided 'context' information.\n"
+    "If the answer is not found in the given context, you MUST answer 'I could not find the information in the document.'\n"
+    "The context information is as follows.\n"
+    "---------------------\n"
+    "{context_str}\n"
+    "---------------------\n"
+)
 
 chat_engine = index.as_chat_engine(
     chat_mode="context",
     memory=memory,
     similarity_top_k=1,
-    context_prompt=qa_prompt_template
+    context_template=qa_prompt_template_str
 )
 
 # --- 6. 대화 시작 ---
