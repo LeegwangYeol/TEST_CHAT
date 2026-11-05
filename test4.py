@@ -2,6 +2,7 @@ import numpy as np
 from llama_index.embeddings.ollama import OllamaEmbedding
 import asyncio
 import platform
+import sys
 
 # 코사인 유사도 계산 함수
 def cosine_similarity(v1, v2):
@@ -30,7 +31,7 @@ async def main():
         print("\n[OK] 임베딩 모델 초기화 완료.")
     except Exception as e:
         print(f"\n[FAIL] 임베딩 모델 초기화 실패: {e}")
-        return
+        sys.exit(1)
 
     # 3. 각 텍스트에 대한 임베딩 생성
     print("\n임베딩 생성 중...")
@@ -41,7 +42,7 @@ async def main():
         print("[OK] 임베딩 생성 완료")
     except Exception as e:
         print(f"\n[FAIL] 임베딩 생성 실패: {e}")
-        return
+        sys.exit(1)
 
     # 4. 코사인 유사도 계산
     similarity = cosine_similarity(query_embedding, doc_embedding)
@@ -64,7 +65,7 @@ if __name__ == "__main__":
     except ImportError:
         print("오류: 'numpy' 라이브러리가 설치되지 않았습니다.")
         print("테스트를 실행하기 전에 'pip install numpy' 명령어로 설치해주세요.")
-        exit()
+        sys.exit(1)
         
     # Windows에서 asyncio를 원활하게 실행하기 위한 정책 설정
     if platform.system() == 'Windows':
