@@ -11,7 +11,7 @@ llm = Ollama(model="DeepSeek-R1-Distill-Qwen-1.5B-Q4_K_M", request_timeout=300.0
 Settings.llm = llm
 Settings.embed_model = embed_model
 
-DOCS_PATH = "c:\\source\\CNHRYPRS1019\\data"
+DOCS_PATH = "data"
 
 # --- 2. 의미 기억 구현 (In-Memory) ---
 print("메모리 기반 인덱스를 생성합니다...")
